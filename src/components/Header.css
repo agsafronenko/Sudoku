@@ -1,0 +1,35 @@
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.app-header h1 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #3f51b5;
+}
+
+.navigation {
+  display: flex;
+  gap: 10px;
+}
+
+.navigation button {
+  background-color: #f0f0f0;
+  color: #666;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.navigation button.active {
+  background-color: #3f51b5;
+  color: white;
+}
+
+.navigation button:hover:not(.active) {
+  background-color: #e0e0e0;
+}
