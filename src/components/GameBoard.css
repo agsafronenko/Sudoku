@@ -1,0 +1,46 @@
+.game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+}
+
+.board-container {
+  margin: 20px 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  background-color: white;
+  padding: 10px;
+}
+
+.sudoku-board {
+  display: grid;
+  grid-template-rows: repeat(9, 1fr);
+  border: 2px solid #333;
+  box-sizing: content-box;
+  position: relative;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+}
+
+.row:nth-child(3n) {
+  border-bottom: 2px solid #333;
+}
+.row:last-child {
+  border-bottom: none;
+}
+
+/* Animation for board completion */
+.sudoku-board.correct {
+  animation: success-pulse 1s infinite;
+  border-color: #4caf50;
+}
+
+.sudoku-board.incorrect {
+  animation: error-shake 0.5s;
+  border-color: #f44336;
+}
