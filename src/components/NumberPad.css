@@ -1,0 +1,37 @@
+.number-pad {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 5px;
+  margin-top: 20px;
+  width: 100%;
+  max-width: 300px;
+}
+
+.number-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  background-color: #3f51b5;
+  color: white;
+  font-size: 18px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.number-button:hover {
+  background-color: #303f9f;
+}
+
+.number-button.erase {
+  background-color: #f44336;
+  grid-column: span 2;
+}
+
+.number-button.erase:hover {
+  background-color: #d32f2f;
+}
+
+.icon {
+  font-size: 14px;
+}
