@@ -26,6 +26,7 @@ function GameBoard() {
   const [isNoteMode, setIsNoteMode] = useState(false);
   const [hintsRemaining, setHintsRemaining] = useState(0);
   const [showIncorrect, setShowIncorrect] = useState(false);
+  const [incorrectChecksRemaining, setIncorrectChecksRemaining] = useState(0);
   const [gameComplete, setGameComplete] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -64,6 +65,16 @@ function GameBoard() {
       expert: 1,
     };
     setHintsRemaining(hintCounts[difficultyLevel]);
+
+    // Set incorrect checks based on difficulty
+    const incorrectCheckCounts = {
+      "very-easy": 3,
+      easy: 3,
+      medium: 2,
+      hard: 1,
+      expert: 0,
+    };
+    setIncorrectChecksRemaining(incorrectCheckCounts[difficultyLevel]);
   };
 
   const handleCellClick = (row, col) => {
@@ -125,14 +136,19 @@ function GameBoard() {
   };
 
   const showIncorrectCells = () => {
+    if (incorrectChecksRemaining <= 0) {
+      setModalMessage("No incorrect checks remaining!");
+      setShowModal(true);
+      return;
+    }
+
     setShowIncorrect(true);
     setTimeout(() => setShowIncorrect(false), 2000);
+    setIncorrectChecksRemaining(incorrectChecksRemaining - 1);
   };
 
   const useHint = () => {
     if (hintsRemaining <= 0) {
-      setModalMessage("No hints remaining!");
-      setShowModal(true);
       return;
     }
 
@@ -214,7 +230,7 @@ function GameBoard() {
         </div>
       </div>
 
-      <Controls isNoteMode={isNoteMode} toggleNoteMode={toggleNoteMode} hintsRemaining={hintsRemaining} useHint={useHint} showIncorrectCells={showIncorrectCells} startNewGame={() => startNewGame(difficulty)} />
+      <Controls isNoteMode={isNoteMode} toggleNoteMode={toggleNoteMode} hintsRemaining={hintsRemaining} incorrectChecksRemaining={incorrectChecksRemaining} useHint={useHint} showIncorrectCells={showIncorrectCells} startNewGame={() => startNewGame(difficulty)} />
 
       <NumberPad onNumberSelect={handleNumberInput} />
 
