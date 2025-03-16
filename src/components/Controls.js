@@ -1,7 +1,13 @@
 import React from "react";
+import { playSound } from "../utils/soundUtils";
 import "./Controls.css";
 
 function Controls({ isNoteMode, toggleNoteMode, hintsRemaining, incorrectChecksRemaining, useHint, showIncorrectCells, startNewGame }) {
+  const handleStartNewGame = () => {
+    playSound("newGame");
+    startNewGame();
+  };
+
   return (
     <div className="controls-container">
       <button className={`control-button ${isNoteMode ? "active" : ""}`} onClick={toggleNoteMode}>
@@ -16,7 +22,7 @@ function Controls({ isNoteMode, toggleNoteMode, hintsRemaining, incorrectChecksR
         Check Mistakes {incorrectChecksRemaining > 0 && `(${incorrectChecksRemaining})`}
       </button>
 
-      <button className="control-button new-game" onClick={startNewGame}>
+      <button className="control-button new-game" onClick={handleStartNewGame}>
         New Game
       </button>
     </div>

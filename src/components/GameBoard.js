@@ -4,8 +4,10 @@ import Controls from "./Controls";
 import NumberPad from "./NumberPad";
 import DifficultySelector from "./DifficultySelector";
 import Modal from "./Modal";
+import MuteButton from "./MuteButton";
 import { generatePuzzle } from "../utils/sudokuGenerator";
-import { checkSolution, isBoardFilled } from "../utils/gameLogic";
+import { checkSolution, isBoardFilled, findIncorrectCells } from "../utils/gameLogic";
+import { playSound } from "../utils/soundUtils";
 import "./GameBoard.css";
 
 function GameBoard() {
@@ -81,6 +83,7 @@ function GameBoard() {
     // Can't select cells that were filled initially
     if (originalBoard[row][col] !== 0) return;
 
+    playSound("clickCell");
     setSelectedCell({ row, col });
   };
 
@@ -91,6 +94,11 @@ function GameBoard() {
     // Only allow input on empty cells from the original board
     if (originalBoard[row][col] !== 0) return;
 
+    if (number === 0) {
+      playSound("clear");
+    } else {
+      playSound("clickButton");
+    }
     const newBoard = [...board];
 
     if (isNoteMode) {
@@ -126,20 +134,33 @@ function GameBoard() {
         setGameComplete(true);
         setIsCorrect(correct);
         setShowModal(true);
-        setModalMessage(correct ? "Congratulations! You've solved the puzzle correctly!" : "Oops! There are some mistakes in your solution.");
+
+        if (correct) {
+          playSound("congratulations");
+          setModalMessage("Congratulations! You've solved the puzzle correctly!");
+        } else {
+          playSound("failed");
+          setModalMessage("Oops! There are some mistakes in your solution.");
+        }
       }
     }
   };
 
   const toggleNoteMode = () => {
+    playSound("clickButton");
     setIsNoteMode(!isNoteMode);
   };
 
   const showIncorrectCells = () => {
     if (incorrectChecksRemaining <= 0) {
-      setModalMessage("No incorrect checks remaining!");
-      setShowModal(true);
       return;
+    }
+
+    const incorrectCells = findIncorrectCells(board, solution);
+    if (incorrectCells.length > 0) {
+      playSound("failed");
+    } else {
+      playSound("hint");
     }
 
     setShowIncorrect(true);
@@ -151,6 +172,8 @@ function GameBoard() {
     if (hintsRemaining <= 0) {
       return;
     }
+
+    playSound("hint");
 
     // Find an empty cell
     const emptyCells = [];
@@ -186,11 +209,20 @@ function GameBoard() {
       setGameComplete(true);
       setIsCorrect(correct);
       setShowModal(true);
-      setModalMessage(correct ? "Congratulations! You've solved the puzzle correctly!" : "Oops! There are some mistakes in your solution.");
+
+      if (correct) {
+        playSound("congratulations");
+        setModalMessage("Congratulations! You've solved the puzzle correctly!");
+      } else {
+        playSound("failed");
+        setModalMessage("Oops! There are some mistakes in your solution.");
+      }
     }
   };
 
   const clearIncorrectCells = () => {
+    playSound("clear");
+
     const newBoard = [...board];
 
     for (let i = 0; i < 9; i++) {
@@ -207,6 +239,7 @@ function GameBoard() {
 
   return (
     <div className="game-container">
+      <MuteButton />
       <DifficultySelector difficulty={difficulty} setDifficulty={setDifficulty} />
 
       <div className="board-container">

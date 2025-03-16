@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import Cell from "./Cell";
 import NumberPad from "./NumberPad";
 import Modal from "./Modal";
+import MuteButton from "./MuteButton";
 import { solveSudoku } from "../utils/sudokuSolver";
+import { playSound } from "../utils/soundUtils";
 import "./SolverPage.css";
 
 function SolverPage() {
@@ -17,12 +19,18 @@ function SolverPage() {
   const [modalMessage, setModalMessage] = useState("");
 
   const handleCellClick = (row, col) => {
+    playSound("clickCell");
     setSelectedCell({ row, col });
   };
 
   const handleNumberInput = (number) => {
     if (!selectedCell) return;
 
+    if (number === 0) {
+      playSound("clear");
+    } else {
+      playSound("clickButton");
+    }
     const { row, col } = selectedCell;
     const newBoard = [...board];
     newBoard[row][col] = number === newBoard[row][col] ? 0 : number;
@@ -30,6 +38,7 @@ function SolverPage() {
   };
 
   const solvePuzzle = () => {
+    playSound("clickButton");
     const boardCopy = JSON.parse(JSON.stringify(board));
 
     const result = solveSudoku(boardCopy);
@@ -37,15 +46,18 @@ function SolverPage() {
     if (result.solved) {
       setSolution(result.board);
       setModalMessage("Puzzle solved!");
+      playSound("congratulations");
     } else {
       setSolution(null);
       setModalMessage("This puzzle cannot be solved. Please check your input.");
+      playSound("failed");
     }
 
     setShowModal(true);
   };
 
   const clearBoard = () => {
+    playSound("clear");
     setBoard(
       Array(9)
         .fill()
@@ -56,6 +68,7 @@ function SolverPage() {
 
   return (
     <div className="solver-container">
+      <MuteButton />
       <h2 className="solver-title">Sudoku Solver</h2>
       <p className="solver-instructions">Enter the numbers you want to solve, then click "Solve".</p>
 

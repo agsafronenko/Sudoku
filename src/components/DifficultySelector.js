@@ -1,8 +1,14 @@
 import React, { useState } from "react";
+import { playSound } from "../utils/soundUtils";
 import "./DifficultySelector.css";
 
 function DifficultySelector({ difficulty, setDifficulty }) {
   const [showTooltip, setShowTooltip] = useState(false);
+
+  const handleDifficultyChange = (diffLevel) => {
+    playSound("clickButton");
+    setDifficulty(diffLevel);
+  };
 
   const difficulties = [
     {
@@ -67,7 +73,7 @@ function DifficultySelector({ difficulty, setDifficulty }) {
 
       <div className="difficulty-options">
         {difficulties.map((diff) => (
-          <button key={diff.id} className={`difficulty-button ${difficulty === diff.id ? "active" : ""}`} onClick={() => setDifficulty(diff.id)}>
+          <button key={diff.id} className={`difficulty-button ${difficulty === diff.id ? "active" : ""}`} onClick={() => handleDifficultyChange(diff.id)}>
             {diff.label}
           </button>
         ))}
