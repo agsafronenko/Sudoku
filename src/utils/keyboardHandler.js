@@ -76,12 +76,15 @@ export const handleKeyDown = (e, params) => {
  * Navigate the board using arrow keys
  */
 const navigateWithArrowKeys = (key, selectedCell, originalBoard, setSelectedCell) => {
-  let row = 4; // by default start in the center of the board
-  let col = 4; // by default start in the center of the board
+  // If no cell is selected yet, start from the center
+  let row = 4;
+  let col = 4;
+
   if (selectedCell) {
     row = selectedCell.row;
     col = selectedCell.col;
   }
+
   let newRow = row;
   let newCol = col;
 
@@ -102,24 +105,30 @@ const navigateWithArrowKeys = (key, selectedCell, originalBoard, setSelectedCell
       break;
   }
 
-  // Add animation class for selection
-  setTimeout(() => {
-    const cell = document.querySelector(`.row:nth-child(${newRow + 1}) .cell:nth-child(${newCol + 1})`);
-    if (cell) {
-      cell.classList.add("key-pressed");
-      setTimeout(() => {
-        cell.classList.remove("key-pressed");
-      }, 1000);
-    }
-  }, 0);
-
   // Check if cell has changed
   if (newRow !== row || newCol !== col) {
+    // Remove any lingering "key-pressed" classes from all cells
+    const allCells = document.querySelectorAll(".cell.key-pressed");
+    allCells.forEach((cell) => {
+      cell.classList.remove("key-pressed");
+    });
+
     playSound("clickCell");
+
+    // Update the selectedCell state
     setSelectedCell({ row: newRow, col: newCol });
+
+    setTimeout(() => {
+      const cell = document.querySelector(`.row:nth-child(${newRow + 1}) .cell:nth-child(${newCol + 1})`);
+      if (cell) {
+        cell.classList.add("key-pressed");
+        setTimeout(() => {
+          cell.classList.remove("key-pressed");
+        }, 300);
+      }
+    }, 10);
   }
 };
-
 /**
  * Set up keyboard event listeners
  */

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Cell from "./Cell";
 import Controls from "./Controls";
 import NumberPad from "./NumberPad";
@@ -8,7 +8,8 @@ import MuteButton from "./MuteButton";
 import { generatePuzzle } from "../utils/sudokuGenerator";
 import { checkSolution, isBoardFilled, findIncorrectCells } from "../utils/gameLogic";
 import { playSound } from "../utils/soundUtils";
-import { setupKeyboardListeners } from "../utils/keyboardHandler"; // Import the new utility
+import { setupKeyboardListeners } from "../utils/keyboardHandler";
+import { useAnimations } from "../hooks/useAnimations";
 import "./GameBoard.css";
 import { PlayPageKeyInfo } from "./KeyboardShortcutsInfo";
 
@@ -37,12 +38,25 @@ function GameBoard() {
   const [modalMessage, setModalMessage] = useState("");
   const [isAnimating, setIsAnimating] = useState(false);
 
+  // Get animation functions from custom hook
+  const { setBoardRef, animateNewGame, animateWin, animateLose, animateCellSelect, animateNumberInput, animateHint } = useAnimations();
+
+  // Board ref for direct DOM manipulations
+  const boardElementRef = useRef(null);
+
+  // Set up the board ref when the component mounts
+  useEffect(() => {
+    if (boardElementRef.current) {
+      setBoardRef(boardElementRef.current);
+    }
+  }, [boardElementRef.current]);
+
   // Initialize new game
   useEffect(() => {
     startNewGame(difficulty);
   }, [difficulty]);
 
-  // Add keyboard event listener using the new utility
+  // Add keyboard event listener using the utility
   useEffect(() => {
     const cleanup = setupKeyboardListeners({
       selectedCell,
@@ -104,6 +118,10 @@ function GameBoard() {
       setIncorrectChecksRemaining(incorrectCheckCounts[difficultyLevel]);
       setIsAnimating(false);
       setShowModal(false);
+
+      setTimeout(() => {
+        animateNewGame();
+      }, 50);
     }, 300);
   };
 
@@ -113,17 +131,7 @@ function GameBoard() {
 
     playSound("clickCell");
     setSelectedCell({ row, col });
-
-    // Add animation class for selection
-    setTimeout(() => {
-      const cell = document.querySelector(`.row:nth-child(${row + 1}) .cell:nth-child(${col + 1})`);
-      if (cell) {
-        cell.classList.add("key-pressed");
-        setTimeout(() => {
-          cell.classList.remove("key-pressed");
-        }, 1000);
-      }
-    }, 0);
+    animateCellSelect(row, col);
   };
 
   const handleNumberInput = (number) => {
@@ -154,6 +162,9 @@ function GameBoard() {
 
       newNotes[row][col] = cellNotes;
       setNotes(newNotes);
+
+      // Animate the notes change
+      animateNumberInput(row, col, true);
     } else {
       // Regular number placement
       const isChanging = newBoard[row][col] !== number;
@@ -170,15 +181,9 @@ function GameBoard() {
 
       setBoard(newBoard);
 
-      // Add animation class for cell change
+      // Animate the number input
       if (isChanging && !isClearingCell) {
-        const cell = document.querySelector(`.row:nth-child(${row + 1}) .cell:nth-child(${col + 1})`);
-        if (cell) {
-          cell.classList.add("number-entered");
-          setTimeout(() => {
-            cell.classList.remove("number-entered");
-          }, 500);
-        }
+        animateNumberInput(row, col, false);
       }
 
       // Check if board is filled
@@ -188,15 +193,25 @@ function GameBoard() {
         setIsCorrect(correct);
 
         setTimeout(() => {
-          setShowModal(true);
+          // Show win or lose animation
           if (correct) {
+            animateWin();
             playSound("congratulations");
-            setModalMessage("Congratulations! You've solved the puzzle correctly!");
           } else {
+            animateLose();
             playSound("failed");
-            setModalMessage("Oops! There are some mistakes in your solution.");
           }
-        }, 800); // Delay to allow for completion animation
+
+          // Show modal after animation
+          setTimeout(() => {
+            setShowModal(true);
+            if (correct) {
+              setModalMessage("Congratulations! You've solved the puzzle correctly!");
+            } else {
+              setModalMessage("Oops! There are some mistakes in your solution.");
+            }
+          }, 1000);
+        }, 300);
       }
     }
   };
@@ -204,6 +219,7 @@ function GameBoard() {
   const toggleNoteMode = () => {
     playSound("clickButton");
     setIsNoteMode(!isNoteMode);
+    setSelectedCell(null);
   };
 
   const showIncorrectCells = () => {
@@ -214,6 +230,7 @@ function GameBoard() {
     const incorrectCells = findIncorrectCells(board, solution);
     if (incorrectCells.length > 0) {
       playSound("failed");
+      animateLose();
     } else {
       playSound("hint");
     }
@@ -257,16 +274,9 @@ function GameBoard() {
     // Highlight the hint cell
     setSelectedCell({ row, col });
 
-    // Add animation class for hint
     setTimeout(() => {
-      const cell = document.querySelector(`.row:nth-child(${row + 1}) .cell:nth-child(${col + 1})`);
-      if (cell) {
-        cell.classList.add("hint-revealed");
-        setTimeout(() => {
-          cell.classList.remove("hint-revealed");
-        }, 1000);
-      }
-    }, 0);
+      animateHint(row, col);
+    }, 50);
 
     setBoard(newBoard);
     setNotes(newNotes);
@@ -279,15 +289,23 @@ function GameBoard() {
       setIsCorrect(correct);
 
       setTimeout(() => {
-        setShowModal(true);
         if (correct) {
+          animateWin();
           playSound("congratulations");
-          setModalMessage("Congratulations! You've solved the puzzle correctly!");
         } else {
+          animateLose();
           playSound("failed");
-          setModalMessage("Oops! There are some mistakes in your solution.");
         }
-      }, 800);
+
+        setTimeout(() => {
+          setShowModal(true);
+          if (correct) {
+            setModalMessage("Congratulations! You've solved the puzzle correctly!");
+          } else {
+            setModalMessage("Oops! There are some mistakes in your solution.");
+          }
+        }, 1000);
+      }, 300);
     }
   };
 
@@ -306,17 +324,6 @@ function GameBoard() {
       }
     }
 
-    // Animate incorrect cells being cleared
-    incorrectCells.forEach(({ row, col }) => {
-      const cell = document.querySelector(`.row:nth-child(${row + 1}) .cell:nth-child(${col + 1})`);
-      if (cell) {
-        cell.classList.add("incorrect-cleared");
-        setTimeout(() => {
-          cell.classList.remove("incorrect-cleared");
-        }, 500);
-      }
-    });
-
     setBoard(newBoard);
     setGameComplete(false);
     setShowModal(false);
@@ -328,7 +335,7 @@ function GameBoard() {
       <DifficultySelector difficulty={difficulty} setDifficulty={setDifficulty} />
 
       <div className="board-container">
-        <div className={`sudoku-board ${gameComplete ? (isCorrect ? "correct" : "incorrect") : ""}`}>
+        <div className={`sudoku-board ${gameComplete ? (isCorrect ? "correct" : "incorrect") : ""}`} ref={boardElementRef}>
           {board.map((row, rowIndex) => (
             <div key={rowIndex} className="row">
               {row.map((cell, colIndex) => (
