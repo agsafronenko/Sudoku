@@ -91,6 +91,7 @@ function SolverPage() {
         .map(() => Array(9).fill(0))
     );
     setSolution(null);
+    setShowModal(false);
   };
 
   useEffect(() => {

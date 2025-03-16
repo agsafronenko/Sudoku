@@ -103,6 +103,7 @@ function GameBoard() {
       };
       setIncorrectChecksRemaining(incorrectCheckCounts[difficultyLevel]);
       setIsAnimating(false);
+      setShowModal(false);
     }, 300);
   };
 
