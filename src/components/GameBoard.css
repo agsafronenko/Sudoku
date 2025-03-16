@@ -34,7 +34,6 @@
   border-bottom: none;
 }
 
-/* Animation for board completion */
 .sudoku-board.correct {
   animation: success-pulse 1s infinite;
   border-color: #4caf50;
@@ -43,4 +42,40 @@
 .sudoku-board.incorrect {
   animation: error-shake 0.5s;
   border-color: #f44336;
+}
+
+.cell.key-pressed {
+  animation: key-flash 0.3s ease-out;
+}
+
+@keyframes key-flash {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(63, 81, 181, 0);
+  }
+  50% {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(63, 81, 181, 0.5);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(63, 81, 181, 0);
+  }
+}
+
+.cell.hint-revealed {
+  animation: hint-pulse 1s ease-in-out;
+}
+
+@keyframes hint-pulse {
+  0% {
+    background-color: #a5d6a7;
+  }
+  50% {
+    background-color: #4caf50;
+    color: white;
+  }
+  100% {
+    background-color: #a5d6a7;
+  }
 }

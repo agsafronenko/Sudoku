@@ -1,10 +1,8 @@
 import React from "react";
-import { playSound } from "../utils/soundUtils";
 import "./Controls.css";
 
-function Controls({ isNoteMode, toggleNoteMode, hintsRemaining, incorrectChecksRemaining, useHint, showIncorrectCells, startNewGame }) {
+function Controls({ isNoteMode, toggleNoteMode, hintsRemaining, incorrectChecksRemaining, showHint, showIncorrectCells, startNewGame }) {
   const handleStartNewGame = () => {
-    playSound("newGame");
     startNewGame();
   };
 
@@ -14,7 +12,7 @@ function Controls({ isNoteMode, toggleNoteMode, hintsRemaining, incorrectChecksR
         {isNoteMode ? "Pencil Mode" : "Pen Mode"}
       </button>
 
-      <button className="control-button hint" onClick={useHint} disabled={hintsRemaining <= 0}>
+      <button className="control-button hint" onClick={showHint} disabled={hintsRemaining <= 0}>
         Hint {hintsRemaining > 0 && `(${hintsRemaining})`}
       </button>
 
