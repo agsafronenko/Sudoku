@@ -1,6 +1,7 @@
 .number-pad {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(2, 1fr);
   gap: 5px;
   margin-top: 20px;
   width: 100%;
@@ -25,7 +26,6 @@
 
 .number-button.erase {
   background-color: #f44336;
-  grid-column: span 2;
 }
 
 .number-button.erase:hover {
