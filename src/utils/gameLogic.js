@@ -7,7 +7,7 @@ function checkSolution(board, solution) {
       }
     }
   }
-  
+
   return true;
 }
 
@@ -20,14 +20,14 @@ function isBoardFilled(board) {
       }
     }
   }
-  
+
   return true;
 }
 
 // Find incorrect cells
 function findIncorrectCells(board, solution) {
   const incorrectCells = [];
-  
+
   for (let row = 0; row < 9; row++) {
     for (let col = 0; col < 9; col++) {
       if (board[row][col] !== 0 && board[row][col] !== solution[row][col]) {
@@ -35,12 +35,8 @@ function findIncorrectCells(board, solution) {
       }
     }
   }
-  
+
   return incorrectCells;
 }
 
-export {
-  checkSolution,
-  isBoardFilled,
-  findIncorrectCells
-};
+export { checkSolution, isBoardFilled, findIncorrectCells };
