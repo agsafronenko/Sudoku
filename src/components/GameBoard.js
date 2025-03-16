@@ -10,7 +10,7 @@ import { checkSolution, isBoardFilled, findIncorrectCells } from "../utils/gameL
 import { playSound } from "../utils/soundUtils";
 import { setupKeyboardListeners } from "../utils/keyboardHandler"; // Import the new utility
 import "./GameBoard.css";
-import KeyboardShortcutsInfo from "./KeyboardShortcutsInfo";
+import { PlayPageKeyInfo } from "./KeyboardShortcutsInfo";
 
 function GameBoard() {
   const [difficulty, setDifficulty] = useState("medium");
@@ -351,7 +351,7 @@ function GameBoard() {
 
       <NumberPad onNumberSelect={handleNumberInput} />
 
-      <KeyboardShortcutsInfo />
+      <PlayPageKeyInfo />
 
       {showModal && <Modal message={modalMessage} onClose={() => setShowModal(false)} onAction={!isCorrect ? clearIncorrectCells : null} actionText={!isCorrect ? "Clear Incorrect" : null} />}
     </div>

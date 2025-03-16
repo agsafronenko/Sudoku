@@ -3,6 +3,7 @@ import Cell from "./Cell";
 import NumberPad from "./NumberPad";
 import Modal from "./Modal";
 import MuteButton from "./MuteButton";
+import { SolvePageKeyInfo } from "./KeyboardShortcutsInfo";
 import { solveSudoku } from "../utils/sudokuSolver";
 import { playSound } from "../utils/soundUtils";
 import { setupKeyboardListeners } from "../utils/keyboardHandler";
@@ -92,6 +93,10 @@ function SolverPage() {
     setSolution(null);
   };
 
+  useEffect(() => {
+    playSound("new");
+  }, []);
+
   return (
     <div className="solver-container">
       <MuteButton />
@@ -120,6 +125,8 @@ function SolverPage() {
       </div>
 
       {!solution && <NumberPad onNumberSelect={handleNumberInput} />}
+
+      <SolvePageKeyInfo />
 
       {showModal && <Modal message={modalMessage} onClose={() => setShowModal(false)} />}
     </div>
