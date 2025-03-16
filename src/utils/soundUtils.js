@@ -1,6 +1,6 @@
 // Sound utility functions
 const sounds = {
-  newGame: new Audio("/sounds/newGame.wav"),
+  new: new Audio("/sounds/new.wav"),
   failed: new Audio("/sounds/failed.wav"),
   congratulations: new Audio("/sounds/congratulations.wav"),
   clear: new Audio("/sounds/clear.wav"),
