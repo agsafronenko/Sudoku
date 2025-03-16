@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Cell from "./Cell";
 import NumberPad from "./NumberPad";
 import Modal from "./Modal";
 import MuteButton from "./MuteButton";
 import { solveSudoku } from "../utils/sudokuSolver";
 import { playSound } from "../utils/soundUtils";
+import { setupKeyboardListeners } from "../utils/keyboardHandler";
 import "./SolverPage.css";
 
 function SolverPage() {
@@ -18,13 +19,38 @@ function SolverPage() {
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
 
+  // Add keyboard event listener
+  useEffect(() => {
+    // Create dummy functions for unsupported operations in solver
+    const dummyFn = () => {};
+
+    const cleanup = setupKeyboardListeners({
+      selectedCell,
+      originalBoard: Array(9)
+        .fill()
+        .map(() => Array(9).fill(0)),
+      handleNumberInput,
+      toggleNoteMode: dummyFn,
+      notes: [],
+      setNotes: dummyFn,
+      setSelectedCell,
+      showHint: dummyFn,
+      showIncorrectCells: dummyFn,
+      startNewGame: clearBoard,
+    });
+    return cleanup;
+  }, [selectedCell, board]);
+
   const handleCellClick = (row, col) => {
+    // Don't allow selection if solution is displayed
+    if (solution) return;
+
     playSound("clickCell");
     setSelectedCell({ row, col });
   };
 
   const handleNumberInput = (number) => {
-    if (!selectedCell) return;
+    if (!selectedCell || solution) return;
 
     if (number === 0) {
       playSound("clear");
@@ -70,14 +96,14 @@ function SolverPage() {
     <div className="solver-container">
       <MuteButton />
       <h2 className="solver-title">Sudoku Solver</h2>
-      <p className="solver-instructions">Enter the numbers you want to solve, then click "Solve".</p>
+      <p className="solver-instructions">Enter the numbers you want to solve, then click "Solve". Use keyboard numbers 1-9 to input values, or Delete/Backspace to clear cells.</p>
 
       <div className="board-container">
         <div className="sudoku-board">
           {(solution || board).map((row, rowIndex) => (
             <div key={rowIndex} className="row">
               {row.map((cell, colIndex) => (
-                <Cell key={`${rowIndex}-${colIndex}`} value={cell} notes={[]} isSelected={selectedCell?.row === rowIndex && selectedCell?.col === colIndex} isOriginal={solution ? true : false} isIncorrect={false} onClick={() => (solution ? null : handleCellClick(rowIndex, colIndex))} />
+                <Cell key={`${rowIndex}-${colIndex}`} value={cell} notes={[]} isSelected={selectedCell?.row === rowIndex && selectedCell?.col === colIndex} isOriginal={solution ? true : false} isIncorrect={false} onClick={() => handleCellClick(rowIndex, colIndex)} />
               ))}
             </div>
           ))}

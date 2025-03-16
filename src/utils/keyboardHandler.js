@@ -42,9 +42,12 @@ export const handleKeyDown = (e, params) => {
     const { row, col } = selectedCell;
     if (originalBoard[row][col] === 0) {
       handleNumberInput(0);
-      const newNotes = [...notes];
-      newNotes[row][col] = [];
-      setNotes(newNotes);
+      // Handle clearing notes for Play mode only
+      if (notes.length > 0) {
+        const newNotes = [...notes];
+        newNotes[row][col] = [];
+        setNotes(newNotes);
+      }
     }
   }
   // Handle p key to toggle pen/pencil mode

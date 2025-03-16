@@ -1,7 +1,8 @@
 import React from "react";
 import "./keyboardStyles.css";
 
-function KeyboardShortcutsInfo({ isVisible = true }) {
+export default function KeyboardShortcutsInfo({ isVisible = true }) {
+  // export function PlayBoardKeyInfo({ isVisible = true }) {
   if (!isVisible) return null;
 
   return (
@@ -9,7 +10,7 @@ function KeyboardShortcutsInfo({ isVisible = true }) {
       <p>Keyboard shortcuts:</p>
       <div>
         <span className="keyboard-shortcut">1-9</span> Enter numbers
-        <span className="keyboard-shortcut">Del</span> Clear cell
+        <span className="keyboard-shortcut">Backspace/Del</span> Clear cell
       </div>
       <div>
         <span className="keyboard-shortcut">P</span> Toggle Pen/Pencil mode
@@ -26,4 +27,22 @@ function KeyboardShortcutsInfo({ isVisible = true }) {
   );
 }
 
-export default KeyboardShortcutsInfo;
+export function SolvePageKeyinfo({ isVisible = true }) {
+  if (!isVisible) return null;
+
+  return (
+    <div className="keyboard-controls-info">
+      <p>Keyboard shortcuts:</p>
+      <div>
+        <span className="keyboard-shortcut">1-9</span> Enter numbers
+        <span className="keyboard-shortcut">Backspace/Del</span> Clear cell
+      </div>
+      <div>
+        <span className="keyboard-shortcut">N</span> New game
+      </div>
+      <div>
+        <span className="keyboard-shortcut">↑↓←→</span> Navigate board
+      </div>
+    </div>
+  );
+}
