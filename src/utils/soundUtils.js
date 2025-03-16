@@ -9,6 +9,10 @@ const sounds = {
   hint: new Audio("/sounds/hint.wav"),
 };
 
+Object.entries(sounds).forEach(([soundName, sound]) => {
+  sound.volume = soundName === "congratulations" ? 0.15 : 0.3;
+});
+
 let isMuted = false;
 
 // Play a sound if not muted
@@ -16,6 +20,7 @@ const playSound = (soundName) => {
   if (!isMuted && sounds[soundName]) {
     // Create a new Audio object each time to allow overlapping sounds
     const sound = new Audio(sounds[soundName].src);
+    sound.volume = soundName === "congratulations" ? 0.15 : 0.3;
     sound.play().catch((error) => {
       console.log("Sound play error:", error);
     });
