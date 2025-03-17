@@ -1,4 +1,3 @@
-// Sound utility functions
 const sounds = {
   new: new Audio("/sounds/new.wav"),
   failed: new Audio("/sounds/failed.wav"),

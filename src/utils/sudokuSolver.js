@@ -1,4 +1,3 @@
-// Utility to solve a Sudoku puzzle
 function solveSudoku(board) {
   // First, validate the input board
   if (!isValidBoard(board)) {

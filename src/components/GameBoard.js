@@ -1,19 +1,23 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
+
 import Cell from "./Cell";
 import Controls from "./Controls";
 import NumberPad from "./NumberPad";
 import DifficultySelector from "./DifficultySelector";
 import Modal from "./Modal";
 import MuteButton from "./MuteButton";
+import { PlayPageKeyInfo } from "./KeyboardShortcutsInfo";
+
 import { generatePuzzle } from "../utils/sudokuGenerator";
 import { playSound } from "../utils/soundUtils";
+
 import { useAnimations } from "../hooks/useAnimations";
 import useBoardState from "../hooks/useBoardState";
 import useInputHandler from "../hooks/useInputHandler";
 import useKeyboardInput from "../hooks/useKeyboardInput";
 import useModal from "../hooks/useModal";
+
 import "./GameBoard.css";
-import { PlayPageKeyInfo } from "./KeyboardShortcutsInfo";
 
 function GameBoard() {
   const [difficulty, setDifficulty] = useState("medium");
@@ -45,6 +49,7 @@ function GameBoard() {
 
   // Modal management
   const { showSuccessModal, showErrorModal, modalProps } = useModal();
+  const { onClose: hideModal } = modalProps;
 
   const showIncorrectCells = useCallback(() => {
     if (incorrectChecksRemaining <= 0) {
@@ -145,13 +150,13 @@ function GameBoard() {
         };
         setIncorrectChecksRemaining(incorrectCheckCounts[difficultyLevel]);
         setIsAnimating(false);
-        modalProps.onClose();
+        hideModal();
         setTimeout(() => {
           animateNewGame();
         }, 50);
       }, 300);
     },
-    [animateNewGame, resetBoard]
+    [animateNewGame, resetBoard, hideModal]
   );
 
   // Initialize new game

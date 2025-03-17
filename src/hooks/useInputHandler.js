@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { playSound } from "../utils/soundUtils";
 
 /**
@@ -38,7 +38,6 @@ function useInputHandler(options) {
     (number) => {
       if (!selectedCell) return;
       const { row, col } = selectedCell;
-
       // Skip if this is a fixed cell from the original board
       if (originalBoard && originalBoard[row][col] !== 0) return;
 

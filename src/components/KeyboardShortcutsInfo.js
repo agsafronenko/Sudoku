@@ -2,7 +2,6 @@ import React from "react";
 import "./KeyboardShortcutsInfo.css";
 
 export function PlayPageKeyInfo({ isVisible = true }) {
-  // export function PlayBoardKeyInfo({ isVisible = true }) {
   if (!isVisible) return null;
 
   return (

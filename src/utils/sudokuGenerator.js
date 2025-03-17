@@ -1,4 +1,3 @@
-// Utility functions for generating Sudoku puzzles
 import { solve, isValid, shuffleArray } from "./sudokuSolver";
 
 // Create a random filled Sudoku board

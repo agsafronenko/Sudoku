@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import "./App.css";
+
 import GameBoard from "./components/GameBoard";
 import SolverPage from "./components/SolverPage";
 import Header from "./components/Header";
+
+import "./App.css";
 
 function App() {
   const [currentPage, setCurrentPage] = useState("game");

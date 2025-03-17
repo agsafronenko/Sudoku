@@ -1,4 +1,3 @@
-// src/utils/keyboardHandler.js
 import { playSound } from "./soundUtils";
 
 /**

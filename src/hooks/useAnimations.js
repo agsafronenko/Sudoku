@@ -1,6 +1,5 @@
-import { useRef } from "react";
+import { useRef, useCallback } from "react";
 import { playNewGameAnimation, playWinAnimation, playLoseAnimation, playNumberInputAnimation, playHintAnimation } from "../utils/animationUtils";
-import { useCallback } from "react";
 
 export const useAnimations = () => {
   const boardRef = useRef(null);

@@ -1,16 +1,20 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
+
 import Cell from "./Cell";
 import NumberPad from "./NumberPad";
 import Modal from "./Modal";
 import MuteButton from "./MuteButton";
 import { SolvePageKeyInfo } from "./KeyboardShortcutsInfo";
+
 import { solveSudoku } from "../utils/sudokuSolver";
 import { playSound } from "../utils/soundUtils";
+
 import { useAnimations } from "../hooks/useAnimations";
 import useBoardState from "../hooks/useBoardState";
 import useInputHandler from "../hooks/useInputHandler";
 import useKeyboardInput from "../hooks/useKeyboardInput";
 import useModal from "../hooks/useModal";
+
 import "./SolverPage.css";
 
 function SolverPage() {
