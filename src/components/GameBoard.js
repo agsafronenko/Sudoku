@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import Cell from "./Cell";
 import Controls from "./Controls";
 import NumberPad from "./NumberPad";
@@ -49,81 +49,67 @@ function GameBoard() {
     if (boardElementRef.current) {
       setBoardRef(boardElementRef.current);
     }
-  }, [boardElementRef.current]);
+  }, [setBoardRef, boardElementRef]);
+
+  const startNewGame = useCallback(
+    (difficultyLevel) => {
+      setIsAnimating(true);
+      playSound("new");
+
+      // Add delay before starting new game for animation
+      setTimeout(() => {
+        const { puzzle, solution: fullSolution } = generatePuzzle(difficultyLevel);
+        setBoard(JSON.parse(JSON.stringify(puzzle)));
+        setSolution(fullSolution);
+        setOriginalBoard(JSON.parse(JSON.stringify(puzzle)));
+        setSelectedCell(null);
+        setNotes(
+          Array(9)
+            .fill()
+            .map(() =>
+              Array(9)
+                .fill()
+                .map(() => [])
+            )
+        );
+        setGameComplete(false);
+        setIsCorrect(false);
+        setShowIncorrect(false);
+
+        // Set hints based on difficulty
+        const hintCounts = {
+          "very-easy": 5,
+          easy: 4,
+          medium: 3,
+          hard: 2,
+          expert: 1,
+        };
+        setHintsRemaining(hintCounts[difficultyLevel]);
+
+        // Set incorrect checks based on difficulty
+        const incorrectCheckCounts = {
+          "very-easy": 3,
+          easy: 3,
+          medium: 2,
+          hard: 1,
+          expert: 0,
+        };
+        setIncorrectChecksRemaining(incorrectCheckCounts[difficultyLevel]);
+        setIsAnimating(false);
+        setShowModal(false);
+
+        setTimeout(() => {
+          animateNewGame();
+        }, 50);
+      }, 300);
+    },
+    [animateNewGame]
+  );
 
   // Initialize new game
   useEffect(() => {
     startNewGame(difficulty);
-  }, [difficulty]);
-
-  // Add keyboard event listener using the utility
-  useEffect(() => {
-    const cleanup = setupKeyboardListeners({
-      selectedCell,
-      originalBoard,
-      handleNumberInput,
-      toggleNoteMode,
-      notes,
-      setNotes,
-      setSelectedCell,
-      showHint,
-      showIncorrectCells,
-      startNewGame: () => startNewGame(difficulty),
-    });
-    return cleanup;
-  }, [selectedCell, originalBoard, difficulty]);
-
-  const startNewGame = (difficultyLevel) => {
-    setIsAnimating(true);
-    playSound("new");
-
-    // Add delay before starting new game for animation
-    setTimeout(() => {
-      const { puzzle, solution: fullSolution } = generatePuzzle(difficultyLevel);
-      setBoard(JSON.parse(JSON.stringify(puzzle)));
-      setSolution(fullSolution);
-      setOriginalBoard(JSON.parse(JSON.stringify(puzzle)));
-      setSelectedCell(null);
-      setNotes(
-        Array(9)
-          .fill()
-          .map(() =>
-            Array(9)
-              .fill()
-              .map(() => [])
-          )
-      );
-      setGameComplete(false);
-      setIsCorrect(false);
-      setShowIncorrect(false);
-
-      // Set hints based on difficulty
-      const hintCounts = {
-        "very-easy": 5,
-        easy: 4,
-        medium: 3,
-        hard: 2,
-        expert: 1,
-      };
-      setHintsRemaining(hintCounts[difficultyLevel]);
-
-      // Set incorrect checks based on difficulty
-      const incorrectCheckCounts = {
-        "very-easy": 3,
-        easy: 3,
-        medium: 2,
-        hard: 1,
-        expert: 0,
-      };
-      setIncorrectChecksRemaining(incorrectCheckCounts[difficultyLevel]);
-      setIsAnimating(false);
-      setShowModal(false);
-
-      setTimeout(() => {
-        animateNewGame();
-      }, 50);
-    }, 300);
-  };
+  }, [difficulty, startNewGame]);
 
   const handleCellClick = (row, col) => {
     // Can't select cells that were filled initially
@@ -134,95 +120,98 @@ function GameBoard() {
     animateCellSelect(row, col);
   };
 
-  const handleNumberInput = (number) => {
-    if (!selectedCell) return;
-    const { row, col } = selectedCell;
+  const handleNumberInput = useCallback(
+    (number) => {
+      if (!selectedCell) return;
+      const { row, col } = selectedCell;
 
-    // Only allow input on empty cells from the original board
-    if (originalBoard[row][col] !== 0) return;
+      // Only allow input on empty cells from the original board
+      if (originalBoard[row][col] !== 0) return;
 
-    if (number === 0) {
-      playSound("clear");
-    } else {
-      playSound("clickButton");
-    }
-    const newBoard = [...board];
-
-    if (isNoteMode) {
-      // Handle notes mode
-      const newNotes = [...notes];
-      const cellNotes = [...newNotes[row][col]];
-
-      const noteIndex = cellNotes.indexOf(number);
-      if (noteIndex === -1) {
-        cellNotes.push(number); // Add number to notes
+      if (number === 0) {
+        playSound("clear");
       } else {
-        cellNotes.splice(noteIndex, 1); // Remove number from notes
+        playSound("clickButton");
       }
+      const newBoard = [...board];
 
-      newNotes[row][col] = cellNotes;
-      setNotes(newNotes);
-
-      // Animate the notes change
-      animateNumberInput(row, col, true);
-    } else {
-      // Regular number placement
-      const isChanging = newBoard[row][col] !== number;
-      const isClearingCell = number === 0;
-
-      newBoard[row][col] = number === newBoard[row][col] ? 0 : number;
-
-      // Clear notes when a number is placed
-      if (number !== 0) {
+      if (isNoteMode) {
+        // Handle notes mode
         const newNotes = [...notes];
-        newNotes[row][col] = [];
+        const cellNotes = [...newNotes[row][col]];
+
+        const noteIndex = cellNotes.indexOf(number);
+        if (noteIndex === -1) {
+          cellNotes.push(number); // Add number to notes
+        } else {
+          cellNotes.splice(noteIndex, 1); // Remove number from notes
+        }
+
+        newNotes[row][col] = cellNotes;
         setNotes(newNotes);
-      }
 
-      setBoard(newBoard);
+        // Animate the notes change
+        animateNumberInput(row, col, true);
+      } else {
+        // Regular number placement
+        const isChanging = newBoard[row][col] !== number;
+        const isClearingCell = number === 0;
 
-      // Animate the number input
-      if (isChanging && !isClearingCell) {
-        animateNumberInput(row, col, false);
-      }
+        newBoard[row][col] = number === newBoard[row][col] ? 0 : number;
 
-      // Check if board is filled
-      if (isBoardFilled(newBoard)) {
-        const correct = checkSolution(newBoard, solution);
-        setGameComplete(true);
-        setIsCorrect(correct);
+        // Clear notes when a number is placed
+        if (number !== 0) {
+          const newNotes = [...notes];
+          newNotes[row][col] = [];
+          setNotes(newNotes);
+        }
 
-        setTimeout(() => {
-          // Show win or lose animation
-          if (correct) {
-            animateWin();
-            playSound("congratulations");
-          } else {
-            animateLose();
-            playSound("failed");
-          }
+        setBoard(newBoard);
 
-          // Show modal after animation
+        // Animate the number input
+        if (isChanging && !isClearingCell) {
+          animateNumberInput(row, col, false);
+        }
+
+        // Check if board is filled
+        if (isBoardFilled(newBoard)) {
+          const correct = checkSolution(newBoard, solution);
+          setGameComplete(true);
+          setIsCorrect(correct);
+
           setTimeout(() => {
-            setShowModal(true);
+            // Show win or lose animation
             if (correct) {
-              setModalMessage("Congratulations! You've solved the puzzle correctly!");
+              animateWin();
+              playSound("congratulations");
             } else {
-              setModalMessage("Oops! There are some mistakes in your solution.");
+              animateLose();
+              playSound("failed");
             }
-          }, 1000);
-        }, 300);
-      }
-    }
-  };
 
-  const toggleNoteMode = () => {
+            // Show modal after animation
+            setTimeout(() => {
+              setShowModal(true);
+              if (correct) {
+                setModalMessage("Congratulations! You've solved the puzzle correctly!");
+              } else {
+                setModalMessage("Oops! There are some mistakes in your solution.");
+              }
+            }, 1000);
+          }, 300);
+        }
+      }
+    },
+    [animateLose, animateNumberInput, animateWin, board, isNoteMode, notes, originalBoard, selectedCell, solution]
+  );
+
+  const toggleNoteMode = useCallback(() => {
     playSound("clickButton");
     setIsNoteMode(!isNoteMode);
     setSelectedCell(null);
-  };
+  }, [isNoteMode]);
 
-  const showIncorrectCells = () => {
+  const showIncorrectCells = useCallback(() => {
     if (incorrectChecksRemaining <= 0) {
       return;
     }
@@ -238,9 +227,9 @@ function GameBoard() {
     setShowIncorrect(true);
     setTimeout(() => setShowIncorrect(false), 2000);
     setIncorrectChecksRemaining(incorrectChecksRemaining - 1);
-  };
+  }, [animateLose, board, incorrectChecksRemaining, solution]);
 
-  const showHint = () => {
+  const showHint = useCallback(() => {
     if (hintsRemaining <= 0) {
       return;
     }
@@ -307,7 +296,7 @@ function GameBoard() {
         }, 1000);
       }, 300);
     }
-  };
+  }, [animateHint, animateLose, animateWin, board, hintsRemaining, notes, solution]);
 
   const clearIncorrectCells = () => {
     playSound("clear");
@@ -328,6 +317,23 @@ function GameBoard() {
     setGameComplete(false);
     setShowModal(false);
   };
+
+  // Add keyboard event listener using the utility
+  useEffect(() => {
+    const cleanup = setupKeyboardListeners({
+      selectedCell,
+      originalBoard,
+      handleNumberInput,
+      toggleNoteMode,
+      notes,
+      setNotes,
+      setSelectedCell,
+      showHint,
+      showIncorrectCells,
+      startNewGame: () => startNewGame(difficulty),
+    });
+    return cleanup;
+  }, [selectedCell, originalBoard, handleNumberInput, toggleNoteMode, notes, showHint, showIncorrectCells, startNewGame, difficulty]);
 
   return (
     <div className={`game-container ${isAnimating ? "animating" : ""} ${gameComplete ? (isCorrect ? "completed-correct" : "completed-incorrect") : ""}`}>
