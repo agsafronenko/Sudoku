@@ -88,8 +88,7 @@ function useInputHandler(options) {
   const toggleNoteMode = useCallback(() => {
     playSound("clickButton");
     setIsNoteMode((prev) => !prev);
-    setSelectedCell(null);
-  }, [setSelectedCell]);
+  }, []);
 
   // Show hint (for play mode)
   const showHint = useCallback(() => {
