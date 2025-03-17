@@ -113,12 +113,25 @@ function GameBoard() {
 
   const { isNoteMode, toggleNoteMode, handleCellClick, handleNumberInput, showHint: showHintHandler } = inputHandler;
 
+  const showHint = useCallback(() => {
+    if (hintsRemaining <= 0) {
+      return;
+    }
+
+    const hintUsed = showHintHandler();
+    if (hintUsed) {
+      const hintsCounter = hintsRemaining - 1;
+      setHintsRemaining(hintsCounter);
+    }
+  }, [hintsRemaining, showHintHandler]);
+
   // Keyboard input handling
   useKeyboardInput({
     boardState,
     inputHandler,
     resetBoard: () => startNewGame(difficulty),
     showIncorrectCells,
+    showHint,
   });
 
   const startNewGame = useCallback(
@@ -163,18 +176,6 @@ function GameBoard() {
   useEffect(() => {
     startNewGame(difficulty);
   }, [difficulty, startNewGame]);
-
-  const showHint = useCallback(() => {
-    if (hintsRemaining <= 0) {
-      return;
-    }
-
-    const hintUsed = showHintHandler();
-    if (hintUsed) {
-      const hintsCounter = hintsRemaining - 1;
-      setHintsRemaining(hintsCounter);
-    }
-  }, [hintsRemaining, showHintHandler]);
 
   return (
     <div className={`game-container ${isAnimating ? "animating" : ""} ${gameComplete ? (isCorrect ? "completed-correct" : "completed-incorrect") : ""}`}>

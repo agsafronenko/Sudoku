@@ -8,14 +8,16 @@ import { playSound } from "../utils/soundUtils";
  * @param {Object} options.inputHandler - Input handlers from useInputHandler
  * @param {Function} options.resetBoard - Function to reset the board
  * @param {Function} options.showIncorrectCells - Function to show incorrect cells (optional)
+ * @param {Function} options.showHint - Function to show hint (optional)
+ *
  * @returns {void}
  */
 function useKeyboardInput(options) {
-  const { boardState, inputHandler, resetBoard, showIncorrectCells } = options;
+  const { boardState, inputHandler, resetBoard, showIncorrectCells, showHint } = options;
 
   const { selectedCell, setSelectedCell, originalBoard, board } = boardState;
 
-  const { handleNumberInput, toggleNoteMode, showHint } = inputHandler;
+  const { handleNumberInput, toggleNoteMode } = inputHandler;
 
   useEffect(() => {
     const keyDownHandler = (e) => {
