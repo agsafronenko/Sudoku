@@ -2,56 +2,56 @@ import React, { useState } from "react";
 import { playSound } from "../utils/soundUtils";
 import "./DifficultySelector.css";
 
-function DifficultySelector({ difficulty, setDifficulty }) {
+export const difficulties = [
+  {
+    id: "very-easy",
+    label: "Very Easy",
+    description: "40-45 empty cells. 5 hints and 3 mistake checks available.",
+    emptyCells: "40-45",
+    hints: 5,
+    checks: 3,
+  },
+  {
+    id: "easy",
+    label: "Easy",
+    description: "46-49 empty cells. 4 hints and 3 mistake checks available.",
+    emptyCells: "46-49",
+    hints: 4,
+    checks: 3,
+  },
+  {
+    id: "medium",
+    label: "Medium",
+    description: "50-54 empty cells. 3 hints and 2 mistake checks available.",
+    emptyCells: "50-54",
+    hints: 3,
+    checks: 2,
+  },
+  {
+    id: "hard",
+    label: "Hard",
+    description: "55-59 empty cells. 2 hints and 1 mistake check available.",
+    emptyCells: "55-59",
+    hints: 2,
+    checks: 1,
+  },
+  {
+    id: "expert",
+    label: "Expert",
+    description: "60-65 empty cells. 1 hint and 0 mistake checks available.",
+    emptyCells: "60-65",
+    hints: 1,
+    checks: 0,
+  },
+];
+
+export function DifficultySelector({ difficulty, setDifficulty }) {
   const [showTooltip, setShowTooltip] = useState(false);
 
   const handleDifficultyChange = (diffLevel) => {
     playSound("clickButton");
     setDifficulty(diffLevel);
   };
-
-  const difficulties = [
-    {
-      id: "very-easy",
-      label: "Very Easy",
-      description: "40-45 empty cells. 5 hints and 3 mistake checks available.",
-      emptyCells: "40-45",
-      hints: 5,
-      checks: 3,
-    },
-    {
-      id: "easy",
-      label: "Easy",
-      description: "46-49 empty cells. 4 hints and 3 mistake checks available.",
-      emptyCells: "46-49",
-      hints: 4,
-      checks: 3,
-    },
-    {
-      id: "medium",
-      label: "Medium",
-      description: "50-54 empty cells. 3 hints and 2 mistake checks available.",
-      emptyCells: "50-54",
-      hints: 3,
-      checks: 2,
-    },
-    {
-      id: "hard",
-      label: "Hard",
-      description: "55-59 empty cells. 2 hints and 1 mistake check available.",
-      emptyCells: "55-59",
-      hints: 2,
-      checks: 1,
-    },
-    {
-      id: "expert",
-      label: "Expert",
-      description: "60-65 empty cells. 1 hint and 0 mistake checks available.",
-      emptyCells: "60-65",
-      hints: 1,
-      checks: 0,
-    },
-  ];
 
   return (
     <div className="difficulty-container">
@@ -81,5 +81,3 @@ function DifficultySelector({ difficulty, setDifficulty }) {
     </div>
   );
 }
-
-export default DifficultySelector;

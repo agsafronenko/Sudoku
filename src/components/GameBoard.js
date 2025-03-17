@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import Cell from "./Cell";
 import Controls from "./Controls";
 import NumberPad from "./NumberPad";
-import DifficultySelector from "./DifficultySelector";
+import { difficulties, DifficultySelector } from "./DifficultySelector";
 import Modal from "./Modal";
 import MuteButton from "./MuteButton";
 import { PlayPageKeyInfo } from "./KeyboardShortcutsInfo";
@@ -144,24 +144,9 @@ function GameBoard() {
         resetBoard(difficultyLevel);
 
         // Set hints based on difficulty
-        const hintCounts = {
-          "very-easy": 5,
-          easy: 4,
-          medium: 3,
-          hard: 2,
-          expert: 1,
-        };
-        setHintsRemaining(hintCounts[difficultyLevel]);
-
-        // Set incorrect checks based on difficulty
-        const incorrectCheckCounts = {
-          "very-easy": 3,
-          easy: 3,
-          medium: 2,
-          hard: 1,
-          expert: 0,
-        };
-        setIncorrectChecksRemaining(incorrectCheckCounts[difficultyLevel]);
+        const selectedDifficulty = difficulties.find((diff) => diff.id === difficultyLevel);
+        setHintsRemaining(selectedDifficulty.hints);
+        setIncorrectChecksRemaining(selectedDifficulty.checks);
         setIsAnimating(false);
         hideModal();
         setTimeout(() => {
