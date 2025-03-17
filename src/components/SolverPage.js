@@ -66,6 +66,7 @@ function SolverPage() {
     boardState,
     inputHandler,
     resetBoard: clearBoard,
+    allowNoteMode: false,
   });
 
   const solvePuzzle = () => {

@@ -13,7 +13,7 @@ import { playSound } from "../utils/soundUtils";
  * @returns {void}
  */
 function useKeyboardInput(options) {
-  const { boardState, inputHandler, resetBoard, showIncorrectCells, showHint } = options;
+  const { boardState, inputHandler, resetBoard, showIncorrectCells, showHint, allowNoteMode = true } = options;
 
   const { selectedCell, setSelectedCell, originalBoard, board } = boardState;
 
@@ -47,7 +47,7 @@ function useKeyboardInput(options) {
         }
       }
       // Handle p key to toggle pen/pencil mode
-      else if (e.key.toLowerCase() === "p" && toggleNoteMode) {
+      else if (e.key.toLowerCase() === "p" && toggleNoteMode && allowNoteMode) {
         toggleNoteMode();
       }
       // Handle h key for hint
@@ -132,7 +132,7 @@ function useKeyboardInput(options) {
     return () => {
       window.removeEventListener("keydown", keyDownHandler);
     };
-  }, [selectedCell, originalBoard, handleNumberInput, toggleNoteMode, showHint, showIncorrectCells, resetBoard, board, setSelectedCell]);
+  }, [selectedCell, originalBoard, handleNumberInput, toggleNoteMode, showHint, showIncorrectCells, resetBoard, board, setSelectedCell, allowNoteMode]);
 }
 
 export default useKeyboardInput;
