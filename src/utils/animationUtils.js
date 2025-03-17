@@ -198,25 +198,27 @@ export const playNumberInputAnimation = (cellElement, isNoteMode = false) => {
     // Enhanced animation for notes mode
     const noteItems = cellElement.querySelectorAll(".note-item.visible");
 
-    // Scatter and fade in effect
-    gsap.fromTo(
-      noteItems,
-      {
-        scale: 0,
-        opacity: 0,
-        y: -10,
-        rotation: gsap.utils.random(-30, 30),
-      },
-      {
-        scale: 1,
-        opacity: 1,
-        y: 0,
-        rotation: 0,
-        duration: 0.4,
-        stagger: 0.04,
-        ease: "back.out(2)",
-      }
-    );
+    if (noteItems.length > 0) {
+      // Scatter and fade in effect
+      gsap.fromTo(
+        noteItems,
+        {
+          scale: 0,
+          opacity: 0,
+          y: -10,
+          rotation: gsap.utils.random(-30, 30),
+        },
+        {
+          scale: 1,
+          opacity: 1,
+          y: 0,
+          rotation: 0,
+          duration: 0.4,
+          stagger: 0.04,
+          ease: "back.out(2)",
+        }
+      );
+    }
 
     // Add a brief highlight to the cell
     gsap.fromTo(
