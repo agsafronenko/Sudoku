@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { playNewGameAnimation, playWinAnimation, playLoseAnimation, playNumberInputAnimation, playHintAnimation } from "../utils/animationUtils";
+import { useCallback } from "react";
 
 export const useAnimations = () => {
   const boardRef = useRef(null);
@@ -11,11 +12,11 @@ export const useAnimations = () => {
   };
 
   // Functions that use the board reference
-  const animateNewGame = () => {
+  const animateNewGame = useCallback(() => {
     playNewGameAnimation(boardRef.current);
     // Reset the previous cell reference on new game
     previousCellRef.current = null;
-  };
+  }, []);
 
   const animateWin = () => {
     playWinAnimation(boardRef.current);
