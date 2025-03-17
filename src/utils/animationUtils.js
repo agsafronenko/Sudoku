@@ -96,14 +96,16 @@ export const playLoseAnimation = (boardElement) => {
   // Find incorrect cells and highlight them
   const incorrectCells = boardElement.querySelectorAll(".cell.incorrect");
 
-  gsap.to(incorrectCells, {
-    backgroundColor: "#ffcdd2",
-    scale: 1.1,
-    duration: 0.3,
-    stagger: 0.05,
-    yoyo: true,
-    repeat: 1,
-  });
+  if (incorrectCells.length > 0) {
+    gsap.to(incorrectCells, {
+      backgroundColor: "#ffcdd2",
+      scale: 1.1,
+      duration: 0.3,
+      stagger: 0.05,
+      yoyo: true,
+      repeat: 1,
+    });
+  }
 };
 
 // Enhanced animation for selecting a cell
