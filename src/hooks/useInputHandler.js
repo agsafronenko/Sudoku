@@ -66,10 +66,7 @@ function useInputHandler(options) {
         const newValue = currentValue === number ? 0 : number;
         const isChanging = currentValue !== newValue;
 
-        if (number !== 0) {
-          // Clear notes when a number is placed
-          clearNotes(row, col);
-        }
+        clearNotes(row, col);
 
         const result = updateCell(row, col, newValue);
 
