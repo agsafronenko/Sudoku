@@ -150,6 +150,13 @@ function GameBoard() {
         newNotes[row][col] = cellNotes;
         setNotes(newNotes);
 
+        if (number === 0) {
+          const newNotes = [...notes];
+          newNotes[row][col] = [];
+          setNotes(newNotes);
+          newBoard[row][col] = 0;
+        }
+
         // Animate the notes change
         animateNumberInput(row, col, true);
       } else {
