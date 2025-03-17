@@ -4,11 +4,16 @@ import { gsap } from "gsap";
 export const playNewGameAnimation = (boardElement) => {
   if (!boardElement) return;
 
-  // Get all cells in the board
-  const cells = boardElement.querySelectorAll(".cell");
-
   // Reset any ongoing animations
+  const cells = boardElement.querySelectorAll(".cell");
   gsap.killTweensOf(cells);
+
+  // Reset winning styles
+  cells.forEach((cell) => {
+    cell.style.backgroundColor = "";
+    cell.style.color = "";
+    cell.style.fontWeight = "normal";
+  });
 
   // Create a staggered flip animation
   gsap.fromTo(
