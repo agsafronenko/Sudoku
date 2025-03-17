@@ -1,5 +1,5 @@
 import React from "react";
-import "./keyboardStyles.css";
+import "./KeyboardShortcutsInfo.css";
 
 export function PlayPageKeyInfo({ isVisible = true }) {
   // export function PlayBoardKeyInfo({ isVisible = true }) {
