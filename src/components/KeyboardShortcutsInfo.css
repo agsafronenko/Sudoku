@@ -19,3 +19,9 @@
   font-family: monospace;
   font-weight: bold;
 }
+
+@media (max-width: 1024px) {
+  .keyboard-controls-info {
+    display: none;
+  }
+}
