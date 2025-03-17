@@ -1,5 +1,5 @@
-import React from 'react';
-import './Modal.css';
+import React from "react";
+import "./Modal.css";
 
 function Modal({ message, onClose, onAction, actionText }) {
   return (
@@ -12,7 +12,7 @@ function Modal({ message, onClose, onAction, actionText }) {
           </button>
           {onAction && (
             <button className="modal-button action" onClick={onAction}>
-              {actionText || 'Action'}
+              {actionText || "Action"}
             </button>
           )}
         </div>
