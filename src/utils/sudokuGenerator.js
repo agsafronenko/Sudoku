@@ -1,5 +1,5 @@
 // Utility functions for generating Sudoku puzzles
-import { solve, isValid } from "./sudokuSolver";
+import { solve, isValid, shuffleArray } from "./sudokuSolver";
 
 // Create a random filled Sudoku board
 function createFullBoard() {
@@ -43,18 +43,6 @@ function fillBoard(board) {
 
   // If we got here, the board is filled
   return true;
-}
-
-// Shuffle array
-function shuffleArray(array) {
-  const shuffled = [...array];
-
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-
-  return shuffled;
 }
 
 // Remove numbers to create a puzzle
@@ -118,4 +106,4 @@ function generatePuzzle(difficulty) {
   return { puzzle, solution };
 }
 
-export { generatePuzzle };
+export { generatePuzzle, createFullBoard, createPuzzle };
