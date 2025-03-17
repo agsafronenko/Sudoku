@@ -45,9 +45,10 @@ function useBoardState(options = {}) {
         setOriginalBoard(JSON.parse(JSON.stringify(puzzle)));
       } else {
         // For solver mode, just clear the board
-        const emptyBoard = Array(9)
-          .fill()
-          .map(() => Array(9).fill(0));
+        const emptyBoard = () =>
+          Array(9)
+            .fill()
+            .map(() => Array(9).fill(0));
         setBoard(emptyBoard);
         setOriginalBoard(emptyBoard);
         setSolution(null);
