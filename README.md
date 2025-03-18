@@ -1,70 +1,129 @@
-# Getting Started with Create React App
+# Sudoku App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**[Play Sudoku Online](https://sudoku-app-demo.example.com)** - Try the live demo!
 
-## Available Scripts
+## Overview
 
-In the project directory, you can run:
+Sudoku App is a modern, interactive Sudoku game and solver built with React + JavaScript. It features both a gameplay mode with multiple difficulty levels and a solver mode that can solve any valid Sudoku puzzle.
 
-### `npm start`
+![Sudoku App Screenshot](public/screenshot.png)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Features
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Game Mode
+- Multiple difficulty levels (Very Easy, Easy, Medium, Hard, Expert)
+- Hint system with limited hints based on difficulty
+- Note-taking mode for planning your moves
+- Check for incorrect cells with limited checks
+- Keyboard navigation and input support
+- Animations for cell selection, number input, and game completion
+- Sound effects with mute option
 
-### `npm test`
+### Solver Mode
+- Input any Sudoku puzzle to solve
+- Automatic validation to ensure the puzzle is solvable
+- Quick solving with the efficient backtracking algorithm
+- Clear visual presentation of the solution
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Controls
 
-### `npm run build`
+### Game Mode
+- **Mouse**: Click cells to select, click numbers to input
+- **Keyboard**:
+  - **1-9**: Input numbers
+  - **Delete/Backspace**: Clear selected cell
+  - **Arrow Keys**: Navigate the board
+  - **P**: Toggle pen/pencil (note) mode
+  - **H**: Get a hint (if available)
+  - **C**: Check for incorrect cells (if available)
+  - **N**: Start a new game
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Solver Mode
+- **Mouse**: Click cells to select, click numbers to input
+- **Keyboard**:
+  - **1-9**: Input numbers
+  - **Delete/Backspace**: Clear selected cell
+  - **Arrow Keys**: Navigate the board
+  - **N**: Clear the board
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Technical Structure
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The app is built with a clean architecture that separates concerns:
 
-### `npm run eject`
+### Components
+- `GameBoard`: Main component for game mode
+- `SolverPage`: Main component for solver mode
+- `Cell`: Individual cell rendering with highlighting
+- `Controls`: Game controls UI
+- `NumberPad`: Input pad for numbers
+- `Modal`: Reusable modal for game messages
+- `DifficultySelector`: Difficulty level selection
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Custom Hooks
+- `useBoardState`: Manages the Sudoku board state
+- `useInputHandler`: Handles user input logic
+- `useKeyboardInput`: Manages keyboard interactions
+- `useModal`: Controls modal state and actions
+- `useAnimations`: Manages board animations
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Utilities
+- `sudokuGenerator.js`: Generates random Sudoku puzzles
+- `sudokuSolver.js`: Solves Sudoku puzzles using backtracking
+- `soundUtils.js`: Manages sound effects
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Installation
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```bash
+# Clone the repository
+git clone https://github.com/username/sudoku-app.git
 
-## Learn More
+# Navigate to the project directory
+cd sudoku-app
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+# Install dependencies
+npm install
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+# Start the development server
+npm start
+```
 
-### Code Splitting
+## Usage
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+After starting the app, you can:
 
-### Analyzing the Bundle Size
+1. Choose between "Play" and "Solve" modes
+2. In Play mode, select a difficulty level to start a new game
+3. In Solve mode, input your puzzle and click "Solve"
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Technologies Used
 
-### Making a Progressive Web App
+- React (Hooks)
+- CSS3 (with animations)
+- Audio APIs for sound effects
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Future Improvements
 
-### Advanced Configuration
+- Timer and score tracking
+- User accounts and statistics
+- More advanced solving techniques
+- Mobile touch optimization
+- Theme customization
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Contributing
 
-### Deployment
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-### `npm run build` fails to minify
+## License
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- Thanks to all Sudoku enthusiasts and algorithm developers who shared their knowledge
+- Inspired by classic Sudoku games and modern web app design
