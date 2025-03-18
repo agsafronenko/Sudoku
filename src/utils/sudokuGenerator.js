@@ -88,7 +88,7 @@ function hasSolution(board) {
 function generatePuzzle(difficulty) {
   // Define empty cell count ranges for each difficulty
   const difficultyRanges = {
-    "very-easy": { min: 2, max: 2 }, // TODO: set 40 - 45 before deployment
+    "very-easy": { min: 40, max: 45 },
     easy: { min: 46, max: 49 },
     medium: { min: 50, max: 54 },
     hard: { min: 55, max: 59 },
