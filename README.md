@@ -1,6 +1,6 @@
 # Sudoku App
 
-**[Play Sudoku Online](https://https://agsafronenko.github.io/Sudoku/)**
+**[Play Sudoku Online](https://agsafronenko.github.io/Sudoku/)**
 
 ## Overview
 
