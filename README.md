@@ -1,10 +1,13 @@
 # Sudoku App
 
-**[Play Sudoku Online](https://sudoku-app-demo.example.com)** - Try the live demo!
+**[Play Sudoku Online](https://https://agsafronenko.github.io/Sudoku/)**
 
 ## Overview
 
-Sudoku App is a modern, interactive Sudoku game and solver built with React + JavaScript. It features both a gameplay mode with multiple difficulty levels and a solver mode that can solve any valid Sudoku puzzle.
+Sudoku App is a modern, interactive Sudoku game and solver built with React and JavaScript. It features both a gameplay mode with multiple difficulty levels and a solver mode that can solve any valid Sudoku puzzle.
+
+### Responsive Design
+The Sudoku App is fully responsive, ensuring a seamless experience across all devices—from desktops to tablets and mobile phones. The layout and controls adapt dynamically to different screen sizes, making it easy to play or solve Sudoku puzzles on the go.
 
 ![Sudoku App Screenshot](public/screenshot.png)
 
@@ -14,9 +17,9 @@ Sudoku App is a modern, interactive Sudoku game and solver built with React + Ja
 - Multiple difficulty levels (Very Easy, Easy, Medium, Hard, Expert)
 - Hint system with limited hints based on difficulty
 - Note-taking mode for planning your moves
-- Check for incorrect cells with limited checks
+- Check for incorrect cells with limited checks based on difficulty
 - Keyboard navigation and input support
-- Animations for cell selection, number input, and game completion
+- Animations for cell selection, number input, new game and game completion
 - Sound effects with mute option
 
 ### Solver Mode
@@ -24,6 +27,7 @@ Sudoku App is a modern, interactive Sudoku game and solver built with React + Ja
 - Automatic validation to ensure the puzzle is solvable
 - Quick solving with the efficient backtracking algorithm
 - Clear visual presentation of the solution
+- Animations for cell selection, number input, new puzzle board and puzzle solution
 
 ## Controls
 
@@ -75,10 +79,10 @@ The app is built with a clean architecture that separates concerns:
 
 ```bash
 # Clone the repository
-git clone https://github.com/username/sudoku-app.git
+git clone https://github.com/agsafronenko/Sudoku
 
 # Navigate to the project directory
-cd sudoku-app
+cd Sudoku
 
 # Install dependencies
 npm install
@@ -98,32 +102,10 @@ After starting the app, you can:
 ## Technologies Used
 
 - React (Hooks)
+- JavaScript
 - CSS3 (with animations)
 - Audio APIs for sound effects
 
-## Future Improvements
-
-- Timer and score tracking
-- User accounts and statistics
-- More advanced solving techniques
-- Mobile touch optimization
-- Theme customization
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
 ## Acknowledgments
 
-- Thanks to all Sudoku enthusiasts and algorithm developers who shared their knowledge
 - Inspired by classic Sudoku games and modern web app design
