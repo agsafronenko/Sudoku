@@ -8,12 +8,12 @@ const soundPaths = {
   hint: "/sounds/hint.wav",
 };
 
-// Function to get correct path with PUBLIC_URL
+// Function to get path with PUBLIC_URL
 const getAudioPath = (path) => {
   return `${process.env.PUBLIC_URL}${path}`;
 };
 
-// Initialize audio objects with correct paths
+// Initialize audio objects
 const sounds = {};
 Object.entries(soundPaths).forEach(([soundName, path]) => {
   sounds[soundName] = new Audio(getAudioPath(path));
