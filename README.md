@@ -15,8 +15,8 @@ The Sudoku App is fully responsive, ensuring a seamless experience across all de
 
 ### Game Mode
 - Multiple difficulty levels (Very Easy, Easy, Medium, Hard, Expert)
-- Hint system with limited hints based on difficulty
 - Note-taking mode for planning your moves
+- Hint system with limited hints based on difficulty
 - Check for incorrect cells with limited checks based on difficulty
 - Keyboard navigation and input support
 - Animations for cell selection, number input, new game and game completion
